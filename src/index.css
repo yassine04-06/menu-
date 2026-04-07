@@ -20,12 +20,17 @@
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
+  --nav-height: 56px;
+  --content-max: 1200px;
 }
 
 /* ─── Reset & Base ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -39,14 +44,17 @@ body {
 
 h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
 
+img {
+  content-visibility: auto;
+}
+
 /* ─── App Shell ─── */
 .app-container {
-  max-width: 520px;
+  width: 100%;
   margin: 0 auto;
   background-color: var(--color-bg);
   min-height: 100vh;
   position: relative;
-  box-shadow: 0 0 60px rgba(0,0,0,0.08);
 }
 
 /* ─── Hero ─── */
@@ -107,7 +115,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   margin-bottom: 0.3rem;
   position: relative;
   z-index: 1;
-  animation: fadeSlideDown 0.8s ease-out;
+  animation: fadeSlideDown 0.6s ease-out;
 }
 .hero h1 span {
   color: var(--color-accent-light);
@@ -120,7 +128,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   text-transform: uppercase;
   position: relative;
   z-index: 1;
-  animation: fadeSlideDown 0.8s ease-out 0.15s both;
+  animation: fadeSlideDown 0.6s ease-out 0.1s both;
 }
 .hero-tagline {
   color: rgba(255,255,255,0.5);
@@ -130,7 +138,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   margin-top: 1rem;
   position: relative;
   z-index: 1;
-  animation: fadeSlideDown 0.8s ease-out 0.3s both;
+  animation: fadeSlideDown 0.6s ease-out 0.2s both;
 }
 
 /* ─── Sticky Nav ─── */
@@ -141,14 +149,22 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 100;
+  border-bottom: 1px solid var(--color-border);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+}
+.nav-scroll-inner {
   display: flex;
   overflow-x: auto;
-  padding: 0.75rem 1rem;
+  padding: 0 1rem;
   gap: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
   scrollbar-width: none;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
 }
-.nav-categories::-webkit-scrollbar { display: none; }
+.nav-scroll-inner::-webkit-scrollbar { display: none; }
 
 .nav-btn {
   background: none;
@@ -161,10 +177,11 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   cursor: pointer;
   padding: 0.45rem 0.9rem;
   border-radius: 25px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  flex-shrink: 0;
 }
 .nav-btn:hover {
   color: var(--color-primary);
@@ -182,9 +199,16 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   line-height: 1;
 }
 
+/* ─── Main ─── */
+.menu-main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 /* ─── Sections ─── */
 .menu-section {
-  padding: 2rem 1.25rem 1rem;
+  padding: 2rem 0 1rem;
 }
 .section-header {
   text-align: center;
@@ -216,31 +240,33 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   background: var(--color-accent);
 }
 
+/* ─── Dishes Grid ─── */
+.dishes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+}
+
 /* ─── Dish Card ─── */
 .dish-card {
   background: var(--color-card);
   border-radius: var(--radius-md);
   padding: 0;
-  margin-bottom: 0.9rem;
   box-shadow: var(--shadow-sm);
   display: flex;
   overflow: hidden;
-  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              box-shadow 0.35s ease;
   cursor: pointer;
   border: 1px solid var(--color-border);
   opacity: 0;
-  transform: translateY(16px);
-  animation: cardReveal 0.5s ease-out forwards;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.25s ease;
+  will-change: opacity, transform;
 }
-.dish-card:nth-child(1) { animation-delay: 0.05s; }
-.dish-card:nth-child(2) { animation-delay: 0.12s; }
-.dish-card:nth-child(3) { animation-delay: 0.19s; }
-.dish-card:nth-child(4) { animation-delay: 0.26s; }
-.dish-card:nth-child(5) { animation-delay: 0.33s; }
-
-.dish-card:hover, .dish-card:active {
-  transform: translateY(-4px) scale(1.01);
+.dish-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.dish-card:hover {
   box-shadow: var(--shadow-lg);
   border-color: rgba(196,154,69,0.2);
 }
@@ -251,15 +277,16 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  background: var(--color-bg-warm);
 }
 .dish-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.35s ease;
 }
 .dish-card:hover .dish-image {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .dish-info {
@@ -320,7 +347,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   box-shadow: 0 4px 20px rgba(37,211,102,0.4);
   cursor: pointer;
   z-index: 1000;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: none;
   animation: waPulse 2.5s infinite;
 }
@@ -343,7 +370,7 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   opacity: 0;
   transform: translateX(8px);
   pointer-events: none;
-  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity 0.25s, transform 0.25s;
   white-space: nowrap;
 }
 .wa-float:hover + .wa-label {
@@ -378,17 +405,134 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
   from { opacity: 0; transform: translateY(-12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes cardReveal {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 @keyframes waPulse {
   0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
   50%      { box-shadow: 0 4px 30px rgba(37,211,102,0.65), 0 0 0 8px rgba(37,211,102,0.1); }
 }
 
-/* ─── Desktop polish ─── */
-@media (min-width: 768px) {
-  body { padding: 2rem 0; }
-  .app-container { border-radius: var(--radius-lg); overflow: hidden; }
+/* ═══════════════════════════════════════════════
+   TABLET  (≥ 600px)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 600px) {
+  .dishes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .dish-card {
+    flex-direction: column;
+  }
+
+  .dish-image-wrapper {
+    width: 100%;
+    min-height: 0;
+    height: 180px;
+  }
+
+  .dish-info {
+    padding: 1rem 1.2rem 1.1rem;
+  }
+
+  .dish-desc {
+    -webkit-line-clamp: 3;
+  }
+
+  .menu-main {
+    padding: 0 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .hero {
+    padding: 4rem 2rem 3rem;
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   DESKTOP (≥ 960px)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 960px) {
+  body {
+    padding: 2rem 0;
+  }
+
+  .app-container {
+    max-width: var(--content-max);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,0,0,0.08);
+  }
+
+  .dishes-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .dish-image-wrapper {
+    height: 200px;
+  }
+
+  .dish-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .nav-scroll-inner {
+    justify-content: center;
+  }
+
+  .nav-btn {
+    font-size: 0.88rem;
+    padding: 0.5rem 1.1rem;
+  }
+
+  .hero {
+    padding: 4.5rem 2rem 3.5rem;
+  }
+  .hero h1 {
+    font-size: 3rem;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+  .hero-tagline {
+    font-size: 0.88rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .menu-main {
+    padding: 0 2rem;
+  }
+
+  .footer {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   LARGE DESKTOP (≥ 1200px)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 1200px) {
+  .dishes-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .dish-card {
+    opacity: 1;
+    transform: none;
+  }
 }

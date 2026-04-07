@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { MessageCircle } from 'lucide-react';
-import { Link as ScrollLink, Element } from 'react-scroll';
 
-/* ── Category icons for nav pills ── */
+/* ── Category icons ── */
 const CATEGORY_EMOJI: Record<string, string> = {
   colazione: '☕',
   tacos: '🌮',
@@ -86,13 +85,104 @@ const MENU_DATA = [
   },
 ];
 
-export default function App() {
-  const [activeCategory, setActiveCategory] = useState('colazione');
+/* ── Lazy‑reveal hook using IntersectionObserver ── */
+function useLazyReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: '60px', threshold: 0.05 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return { ref, visible };
+}
+
+/* ── DishCard with lazy reveal ── */
+function DishCard({ dish, index }: { dish: { name: string; desc: string; price: string; img: string }; index: number }) {
+  const { ref, visible } = useLazyReveal();
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const target = e.currentTarget;
-    target.style.display = 'none';
+    e.currentTarget.style.display = 'none';
   };
+
+  return (
+    <div
+      ref={ref}
+      className={`dish-card${visible ? ' dish-card--visible' : ''}`}
+      style={{ transitionDelay: `${index * 60}ms` }}
+    >
+      <div className="dish-image-wrapper">
+        <img
+          src={dish.img}
+          alt={dish.name}
+          className="dish-image"
+          loading="lazy"
+          decoding="async"
+          width={280}
+          height={280}
+          onError={handleImageError}
+        />
+      </div>
+      <div className="dish-info">
+        <h3 className="dish-title">{dish.name}</h3>
+        <p className="dish-desc">{dish.desc}</p>
+        <span className="dish-price">{dish.price}</span>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  const [activeCategory, setActiveCategory] = useState('colazione');
+  const navRef = useRef<HTMLElement>(null);
+
+  /* ── Scroll‑spy via IntersectionObserver ── */
+  useEffect(() => {
+    const sections = MENU_DATA.map((c) => document.getElementById(c.id)).filter(Boolean) as HTMLElement[];
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveCategory(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    sections.forEach((s) => obs.observe(s));
+    return () => obs.disconnect();
+  }, []);
+
+  /* ── Scroll active nav pill into view ── */
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const activeBtn = nav.querySelector('.nav-btn.active') as HTMLElement | null;
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }, [activeCategory]);
+
+  const scrollToSection = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const navHeight = navRef.current?.offsetHeight ?? 56;
+      const top = el.getBoundingClientRect().top + window.scrollY - navHeight - 8;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }, []);
 
   return (
     <div className="app-container">
@@ -109,28 +199,25 @@ export default function App() {
       </header>
 
       {/* ── Sticky Nav ── */}
-      <nav className="nav-categories">
-        {MENU_DATA.map((cat) => (
-          <ScrollLink
-            key={cat.id}
-            to={cat.id}
-            spy
-            smooth
-            offset={-56}
-            duration={500}
-            onSetActive={() => setActiveCategory(cat.id)}
-            className={`nav-btn ${activeCategory === cat.id ? 'active' : ''}`}
-          >
-            <span className="nav-emoji">{CATEGORY_EMOJI[cat.id]}</span>
-            {cat.name}
-          </ScrollLink>
-        ))}
+      <nav className="nav-categories" ref={navRef}>
+        <div className="nav-scroll-inner">
+          {MENU_DATA.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => scrollToSection(cat.id)}
+              className={`nav-btn${activeCategory === cat.id ? ' active' : ''}`}
+            >
+              <span className="nav-emoji">{CATEGORY_EMOJI[cat.id]}</span>
+              {cat.name}
+            </button>
+          ))}
+        </div>
       </nav>
 
       {/* ── Menu Sections ── */}
-      <main>
+      <main className="menu-main">
         {MENU_DATA.map((cat) => (
-          <Element name={cat.id} key={cat.id} className="menu-section">
+          <section id={cat.id} key={cat.id} className="menu-section">
             <div className="section-header">
               <h2>{cat.name}</h2>
               <div className="section-divider">
@@ -140,27 +227,12 @@ export default function App() {
               </div>
             </div>
 
-            <div className="dishes-container">
+            <div className="dishes-grid">
               {cat.dishes.map((dish, i) => (
-                <div className="dish-card" key={i}>
-                  <div className="dish-image-wrapper">
-                    <img
-                      src={dish.img}
-                      alt={dish.name}
-                      className="dish-image"
-                      loading="lazy"
-                      onError={handleImageError}
-                    />
-                  </div>
-                  <div className="dish-info">
-                    <h3 className="dish-title">{dish.name}</h3>
-                    <p className="dish-desc">{dish.desc}</p>
-                    <span className="dish-price">{dish.price}</span>
-                  </div>
-                </div>
+                <DishCard dish={dish} index={i} key={i} />
               ))}
             </div>
-          </Element>
+          </section>
         ))}
       </main>
 
