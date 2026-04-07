@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { MessageCircle } from 'lucide-react';
 
 /* ── Category icons ── */
 const CATEGORY_EMOJI: Record<string, string> = {
@@ -244,23 +243,8 @@ export default function App() {
       <footer className="footer">
         <div className="footer-brand">Blu Caffè</div>
         <div className="footer-divider" />
-        <p>Menu digitale &middot; Ordina via WhatsApp</p>
+        <p>Menu digitale</p>
       </footer>
-
-      {/* ── WhatsApp FAB ── */}
-      <button
-        className="wa-float"
-        aria-label="Ordina su WhatsApp"
-        onClick={() =>
-          window.open(
-            'https://wa.me/1234567890?text=Ciao%2C%20vorrei%20ordinare!',
-            '_blank'
-          )
-        }
-      >
-        <MessageCircle size={26} strokeWidth={2.2} />
-      </button>
-      <span className="wa-label">Ordina su WhatsApp</span>
     </div>
   );
 }
