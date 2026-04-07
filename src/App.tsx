@@ -170,8 +170,12 @@ export default function App() {
     const nav = navRef.current;
     if (!nav) return;
     const activeBtn = nav.querySelector('.nav-btn.active') as HTMLElement | null;
-    if (activeBtn) {
-      activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    const navInner = nav.querySelector('.nav-scroll-inner') as HTMLElement | null;
+    if (activeBtn && navInner) {
+      const navRect = navInner.getBoundingClientRect();
+      const btnRect = activeBtn.getBoundingClientRect();
+      const scrollLeft = navInner.scrollLeft + (btnRect.left - navRect.left) - (navRect.width / 2) + (btnRect.width / 2);
+      navInner.scrollTo({ left: scrollLeft, behavior: 'smooth' });
     }
   }, [activeCategory]);
 
