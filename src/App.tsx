@@ -7,82 +7,250 @@ const CATEGORY_EMOJI: Record<string, string> = {
   antipasti: '🍽️',
   insalate: '🥗',
   couscous: '🍲',
-  padelle: '🍳',
   tajine: '🫕',
+  padelle: '🍳',
 };
 
-/* ── Menu Data ── */
-const MENU_DATA = [
+/* ── Types ── */
+interface Dish {
+  name: string;
+  desc: string;
+  price: string;
+  img: string;
+  veg?: boolean;
+  small?: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  subtitle?: string;
+  dishes: Dish[];
+}
+
+/* ── Menu Data (contenuto completo aggiornato) ── */
+const MENU_DATA: Category[] = [
   {
     id: 'colazione',
     name: 'Colazione',
+    subtitle: 'Menu Combo',
     dishes: [
-      { name: 'Colazione Completa', desc: 'Caffetteria a scelta, spremuta o frullato, msemen o batbout con contorni: miele, olio, formaggio, olive e mortadella.', price: '11.00 €', img: '/images/dish_0_0.jpeg' },
-      { name: 'Colazione con Brioche', desc: 'Caffetteria a scelta e brioche con farcitura a scelta.', price: '6.00 €', img: '/images/dish_0_5.jpeg' },
-      { name: 'Colazione Harira', desc: 'Caffetteria, msemen o batbout, contorni e zuppa harira calda.', price: '10.00 €', img: '/images/dish_0_7.jpeg' },
-      { name: 'Colazione Light', desc: 'Caffetteria, panetteria msemen o batbout, contorni.', price: '8.50 €', img: '/images/dish_0_6.jpeg' },
-      { name: 'Colazione con Omelette', desc: 'Caffetteria, spremuta o frullato, batbout, omelette o frittata.', price: '3.00 €', img: '/images/dish_0_1.jpeg' },
+      {
+        name: 'Combo Base',
+        desc: 'Caffetteria a scelta + Panetteria (Msemen o Batbout) + Contorni: Miele/Olio, Formaggio, Olive e Mortadella.',
+        price: '6.00 €',
+        img: '/images/dish_0_0.jpeg',
+      },
+      {
+        name: 'Combo Brioche',
+        desc: 'Caffetteria a scelta + Brioche con farcitura a scelta.',
+        price: '3.00 €',
+        img: '/images/dish_0_5.jpeg',
+      },
+      {
+        name: 'Combo Completo',
+        desc: 'Caffetteria a scelta + Spremuta o Frullato + Panetteria (Msemen o Batbout) + Contorni: Miele/Olio, Formaggio, Olive e Mortadella.',
+        price: '8.50 €',
+        img: '/images/dish_0_6.jpeg',
+      },
+      {
+        name: 'Combo Harira',
+        desc: 'Caffetteria a scelta + Panetteria (Msemen o Batbout) + Contorni: Miele/Olio, Formaggio, Olive e Mortadella + Zuppa Harira.',
+        price: '10.00 €',
+        img: '/images/dish_0_7.jpeg',
+      },
+      {
+        name: 'Combo Omlette',
+        desc: 'Caffetteria a scelta + Spremuta o Frullato + Panetteria Batbout + Omlette o Frittata.',
+        price: '11.00 €',
+        img: '/images/dish_0_1.jpeg',
+      },
     ],
   },
   {
     id: 'tacos',
-    name: 'Tacos Msemen',
+    name: 'Tacos-Msemen',
+    subtitle: '12.00 €',
     dishes: [
-      { name: 'Tacos Pollo Classic', desc: 'Pollo, patatine, cheddar, salsa algerienne e ketchup.', price: '6.00 €', img: '/images/dish_1_18.jpeg' },
-      { name: 'Tacos Pollo Fresh', desc: 'Pollo, patatine, pomodoro e cipolla a cubetti, lattuga, salsa algerienne.', price: '6.00 €', img: '/images/dish_1_20.jpeg' },
-      { name: 'Tacos Manzo BBQ', desc: 'Macinato di manzo, patatine, cipolla caramellata e salsa BBQ.', price: '8.50 €', img: '/images/dish_1_20.jpeg' },
-      { name: 'Tacos Manzo e Cheddar', desc: 'Macinato di manzo, patatine, peperoni a cubetti e cheddar.', price: '8.50 €', img: '/images/dish_1_20.jpeg' },
-      { name: 'Tacos Merguez Classic', desc: 'Salsiccia merguez, patatine, cheddar, salsa algerienne e ketchup.', price: '8.50 €', img: '/images/dish_1_18.jpeg' },
-      { name: 'Tacos Merguez Fresh', desc: 'Salsiccia, patatine, pomodoro e cipolla, lattuga, salsa algerienne.', price: '8.50 €', img: '/images/dish_1_18.jpeg' },
-      { name: 'Menu Tacos Combo', desc: 'Tacos msemen + patatine + bibita in vetro.', price: '12.00 – 15.00 €', img: '/images/dish_1_20.jpeg' },
+      {
+        name: 'Con Pollo — Classic',
+        desc: 'Pollo, Patatine, Cheddar, Salsa Algerienne, Ketchup.',
+        price: '12.00 €',
+        img: '/images/dish_1_18.jpeg',
+      },
+      {
+        name: 'Con Pollo — Fresh',
+        desc: 'Pollo, Patatine, Pomodoro e Cipolla a cubetti, Lattuga, Salsa Algerienne e Ketchup.',
+        price: '12.00 €',
+        img: '/images/dish_1_20.jpeg',
+      },
+      {
+        name: 'Con Macinato di Manzo — BBQ',
+        desc: 'Macinato di Manzo, Patatine, Cipolla Caramellata e Salsa BBQ.',
+        price: '12.00 €',
+        img: '/images/dish_1_20.jpeg',
+      },
+      {
+        name: 'Con Macinato di Manzo — Cheddar',
+        desc: 'Macinato di Manzo, Patatine, Peperoni a cubetti, Cheddar.',
+        price: '12.00 €',
+        img: '/images/dish_1_20.jpeg',
+      },
+      {
+        name: 'Con Salsiccia Merguez — Classic',
+        desc: 'Salsiccia, Patatine, Cheddar, Salsa Algerienne e Ketchup.',
+        price: '12.00 €',
+        img: '/images/dish_1_18.jpeg',
+      },
+      {
+        name: 'Con Salsiccia Merguez — Fresh',
+        desc: 'Salsiccia, Patatine, Pomodoro e Cipolla a cubetti, Lattuga, Salsa Algerienne e Ketchup.',
+        price: '12.00 €',
+        img: '/images/dish_1_18.jpeg',
+      },
+      {
+        name: 'Menu Combo Tacos-Msemen',
+        desc: 'Include: Tacos-Msemen + Patatine + Bibita in vetro.',
+        price: '15.00 €',
+        img: '/images/dish_1_20.jpeg',
+      },
     ],
   },
   {
     id: 'antipasti',
     name: 'Antipasti',
     dishes: [
-      { name: 'Patatine', desc: 'Patatine fritte croccanti e dorate.', price: '3.50 €', img: '/images/dish_2_30.jpeg' },
-      { name: 'Zaalouk', desc: 'Purea di melanzane affumicate e peperoni, intenso aroma di spezie.', price: '5.50 €', img: '/images/dish_2_34.jpeg' },
-      { name: 'Insalata Marocchina', desc: 'Cubetti fini di pomodori, cetrioli croccanti e cipolla dolce.', price: '5.50 €', img: '/images/dish_2_36.jpeg' },
-      { name: 'Bestila di Pollo', desc: 'Pasta fillo croccante ripiena di pollo speziato, mandorle tostate, cannella e zafferano.', price: '7.50 €', img: '/images/dish_2_28.jpeg' },
-      { name: 'Bestila di Pesce', desc: 'Pesce bianco, gamberi, calamari, funghi e spaghettini di riso in pasta fillo croccante.', price: '8.00 €', img: '/images/dish_2_32.jpeg' },
-      { name: 'Sigari Croccanti', desc: 'Involtini di pasta fillo farciti con macinato di manzo, cumino, paprica dolce e prezzemolo.', price: '4.00 €', img: '/images/dish_2_26.jpeg' },
+      {
+        name: 'Patatine',
+        desc: 'Patatine fritte croccanti e dorate.',
+        price: '3.50 €',
+        img: '/images/dish_2_30.jpeg',
+      },
+      {
+        name: 'Zaalouk',
+        desc: 'Melanzane affumicate e peperoni con intenso aroma di spezie.',
+        price: '5.50 €',
+        img: '/images/dish_2_34.jpeg',
+        veg: true,
+      },
+      {
+        name: 'Insalata Marocchina',
+        desc: 'Cubetti fini di pomodori, cetrioli croccanti e cipolla dolce.',
+        price: '4.00 €',
+        img: '/images/dish_2_36.jpeg',
+        veg: true,
+      },
+      {
+        name: 'Bestila di Pollo',
+        desc: 'Pasta fillo croccante ripiena di pollo speziato, mandorle tostate, cannella e zafferano. Il perfetto equilibrio tra dolce e salato.',
+        price: '7.50 €',
+        img: '/images/dish_2_28.jpeg',
+      },
+      {
+        name: 'Bestila di Pesce',
+        desc: 'Pesce bianco, gamberi, calamari, funghi e spaghettini di riso in croccante pasta fillo. Leggermente piccante e agrumata.',
+        price: '8.00 €',
+        img: '/images/dish_2_32.jpeg',
+      },
+      {
+        name: 'Sigari Croccanti',
+        desc: 'Involtini di pasta fillo con macinato di manzo, cumino, paprica dolce e prezzemolo fresco.',
+        price: '8.00 €',
+        img: '/images/dish_2_26.jpeg',
+      },
     ],
   },
   {
     id: 'insalate',
     name: 'Insalate',
     dishes: [
-      { name: 'Caesar Blu Caffè', desc: 'Lattuga romana, pollo dorato allo zafferano e lime, mandorle croccanti, sesamo nero e scaglie di grana.', price: '8.00 €', img: '/images/dish_3_60.jpeg' },
-      { name: 'Insalata Rustica', desc: 'Lattuga romana e rossa, filetti di tonno, uova sode, mais dolce e carote julienne con olio EVO.', price: '8.00 €', img: '/images/dish_3_62.jpeg' },
+      {
+        name: 'Caesar Blu Caffè',
+        desc: 'Lattuga romana, pollo dorato allo zafferano, lime, mandorle in scaglie, semi di sesamo neri e grana.',
+        price: '9.00 €',
+        img: '/images/dish_3_60.jpeg',
+        veg: true,
+        small: '6.00 €',
+      },
+      {
+        name: 'Insalata Rustica',
+        desc: 'Lattuga romana e rossa, tonno all\'olio d\'oliva, uova sode, mais dolce, carote julienne. Olio EVO, sale, pepe nero.',
+        price: '10.00 €',
+        img: '/images/dish_3_62.jpeg',
+        veg: true,
+        small: '7.00 €',
+      },
     ],
   },
   {
     id: 'couscous',
     name: 'Couscous',
     dishes: [
-      { name: 'Couscous Tradizionale', desc: 'Couscous sgranato a mano cotto a vapore, verdure e carne tenera con brodo speziato e Tfaya: cipolle caramellate, uvetta, cannella e miele.', price: '11.00 €', img: '/images/dish_3_64.jpeg' },
-    ],
-  },
-  {
-    id: 'padelle',
-    name: 'Padelle',
-    dishes: [
-      { name: 'Padella Trita', desc: 'Carne tritata, uova strapazzate, salsa pomodoro, formaggio, prezzemolo e coriandolo. Servita con pane.', price: '10.00 €', img: '/images/dish_3_66.jpeg' },
-      { name: 'Padella Salsiccia', desc: 'Salsiccia, uova strapazzate, salsa pomodoro e formaggio. Servita con pane.', price: '9.00 €', img: '/images/dish_3_56.jpeg' },
-      { name: 'Padella Gamberi', desc: 'Gamberi, uova strapazzate, salsa pomodoro, formaggio, coriandolo. Servita con pane.', price: '11.00 €', img: '/images/dish_3_58.jpeg' },
+      {
+        name: 'Couscous Tradizionale',
+        desc: 'Sgranato a mano e cotto a vapore, con verdure, carne tenera, brodo speziato e Tfaya (cipolle caramellate, uvetta, cannella, miele).',
+        price: '13.00 €',
+        img: '/images/dish_3_64.jpeg',
+        veg: true,
+        small: '11.00 €',
+      },
     ],
   },
   {
     id: 'tajine',
     name: 'Tajine',
     dishes: [
-      { name: 'Tajine di Pollo', desc: 'Pollo arrosto marinato con spezie marocchine, doratura croccante, salsa di cipolle, limone e olive. Patate al forno e pane.', price: '14.00 €', img: '/images/dish_3_73.jpeg' },
-      { name: 'Tajine di Manzo', desc: 'Teneri bocconi di carne cotti lentamente con spezie marocchine, prugne dolci e caramellate. Con pane morbido.', price: '16.50 €', img: '/images/dish_3_75.jpeg' },
-      { name: 'Tajine Polpette di Manzo', desc: 'Polpette speziate secondo la tradizione marocchina in salsa di pomodoro ricca con erbe e spezie. Con pane morbido.', price: '15.00 €', img: '/images/dish_3_77.jpeg' },
+      {
+        name: 'Tajine di Pollo',
+        desc: 'Pollo arrosto marinato con spezie marocchine, cotto lentamente in tajine e dorato in forno. Salsa di cipolle, limone e olive, patate al forno e pane morbido.',
+        price: '14.00 €',
+        img: '/images/dish_3_73.jpeg',
+      },
+      {
+        name: 'Tajine di Manzo',
+        desc: 'Bocconi di manzo cotti lentamente con spezie marocchine e prugne dolci caramellate. Servito con pane morbido.',
+        price: '15.00 €',
+        img: '/images/dish_3_75.jpeg',
+      },
+      {
+        name: 'Tajine di Polpette di Manzo',
+        desc: 'Polpette di carne speziata in salsa di pomodoro ricca con erbe e spezie. Tradizione marocchina. Servito con pane morbido.',
+        price: '16.50 €',
+        img: '/images/dish_3_77.jpeg',
+      },
+    ],
+  },
+  {
+    id: 'padelle',
+    name: 'Padelle',
+    dishes: [
+      {
+        name: 'Padella Trita',
+        desc: 'Carne tritata, uova strapazzate, salsa pomodoro, formaggio, pomodoro, prezzemolo e coriandolo. Servita con pane.',
+        price: '10.00 €',
+        img: '/images/dish_3_66.jpeg',
+        veg: true,
+        small: '8.00 €',
+      },
+      {
+        name: 'Padella Salsiccia',
+        desc: 'Salsiccia, uova strapazzate, salsa pomodoro, formaggio. Con pane.',
+        price: '9.00 €',
+        img: '/images/dish_3_56.jpeg',
+      },
+      {
+        name: 'Padella Gamberi',
+        desc: 'Gamberi, uova strapazzate, salsa pomodoro, formaggio, pomodoro, prezzemolo e coriandolo. Servita con pane.',
+        price: '11.00 €',
+        img: '/images/dish_3_58.jpeg',
+      },
     ],
   },
 ];
+
+
+
+
 
 /* ── Lazy‑reveal hook using IntersectionObserver ── */
 function useLazyReveal() {
@@ -109,7 +277,7 @@ function useLazyReveal() {
 }
 
 /* ── DishCard with lazy reveal ── */
-function DishCard({ dish, index }: { dish: { name: string; desc: string; price: string; img: string }; index: number }) {
+function DishCard({ dish, index }: { dish: Dish; index: number }) {
   const { ref, visible } = useLazyReveal();
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -133,11 +301,15 @@ function DishCard({ dish, index }: { dish: { name: string; desc: string; price: 
           height={280}
           onError={handleImageError}
         />
+        {dish.veg && <span className="veg-badge">VEG</span>}
       </div>
       <div className="dish-info">
         <h3 className="dish-title">{dish.name}</h3>
         <p className="dish-desc">{dish.desc}</p>
-        <span className="dish-price">{dish.price}</span>
+        <div className="dish-price-row">
+          <span className="dish-price">{dish.price}</span>
+          {dish.small && <span className="dish-price-small">piccola {dish.small}</span>}
+        </div>
       </div>
     </div>
   );
@@ -191,14 +363,22 @@ export default function App() {
     <div className="app-container">
       {/* ── Hero ── */}
       <header className="hero">
-        <div className="hero-ornament">
-          <span className="line" />
-          <span className="diamond" />
-          <span className="line" />
+        <div className="hero-bg-pattern" />
+        <div className="hero-content">
+          <div className="hero-ornament">
+            <span className="line" />
+            <span className="diamond" />
+            <span className="line" />
+          </div>
+          <h1>Blu <span>Caffè</span></h1>
+          <p className="hero-subtitle">Scopri il nostro menu</p>
+          <p className="hero-tagline">Sapori autentici, tradizione marocchina</p>
+          <div className="hero-ornament hero-ornament--bottom">
+            <span className="line" />
+            <span className="diamond" />
+            <span className="line" />
+          </div>
         </div>
-        <h1>Blu <span>Caffè</span></h1>
-        <p className="hero-subtitle">Scopri il nostro menu</p>
-        <p className="hero-tagline">Sapori autentici, tradizione marocchina</p>
       </header>
 
       {/* ── Sticky Nav ── */}
@@ -222,7 +402,9 @@ export default function App() {
         {MENU_DATA.map((cat) => (
           <section id={cat.id} key={cat.id} className="menu-section">
             <div className="section-header">
+              <div className="section-header-emoji">{CATEGORY_EMOJI[cat.id]}</div>
               <h2>{cat.name}</h2>
+              {cat.subtitle && <p className="section-subtitle">{cat.subtitle}</p>}
               <div className="section-divider">
                 <span className="bar" />
                 <span className="dot" />
@@ -235,15 +417,19 @@ export default function App() {
                 <DishCard dish={dish} index={i} key={i} />
               ))}
             </div>
+
+
           </section>
         ))}
       </main>
 
       {/* ── Footer ── */}
       <footer className="footer">
-        <div className="footer-brand">Blu Caffè</div>
-        <div className="footer-divider" />
-        <p>Menu digitale</p>
+        <div className="footer-content">
+          <div className="footer-brand">Blu Caffè</div>
+          <div className="footer-divider" />
+          <p className="footer-text">Menu digitale · Sapori autentici</p>
+        </div>
       </footer>
     </div>
   );
