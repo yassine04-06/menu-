@@ -121,7 +121,7 @@ const MENU_DATA: Category[] = [
     dishes: [
       {
         name: 'Msemen Fondente',
-        desc: 'Sfoglia arrotolata con ganache fondente, fragole fresche e gelato alla vaniglia.',
+        desc: 'Sfoglia arrotolata con ganache fondente, fragole fresche.',
         price: '4.00 €',
         img: '/images/msemen_1.jpeg',
         badge: 'bestseller',
@@ -144,7 +144,7 @@ const MENU_DATA: Category[] = [
       },
       {
         name: 'Msemen Cioccolato',
-        desc: 'Msemen artigianale con cioccolato al latte, fragole di stagione e banana caramellata.',
+        desc: 'Msemen artigianale con cioccolato al latte, fragole di stagione e banana.',
         price: '4.00 €',
         img: '/images/msemen_4.jpeg',
         allergens: ['G', 'L', 'U'],
