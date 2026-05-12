@@ -495,10 +495,6 @@ img { content-visibility: auto; }
   color: var(--color-text-secondary);
   margin: 0 0 0.5rem;
   line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .dish-price-row {
@@ -714,9 +710,6 @@ img { content-visibility: auto; }
   }
   .dish-info {
     padding: 0.9rem 1.1rem 1rem;
-  }
-  .dish-desc {
-    -webkit-line-clamp: 3;
   }
   .menu-main {
     padding: 0 1.5rem;
