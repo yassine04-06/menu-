@@ -471,6 +471,32 @@ img { content-visibility: auto; }
   box-shadow: 0 2px 6px rgba(196, 154, 69, 0.3);
 }
 
+/* Card senza immagine (bibite, caffetteria) */
+.dish-card--no-image {
+  flex-direction: row;
+  align-items: stretch;
+}
+.dish-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+.dish-title-row .dish-title {
+  margin-bottom: 0;
+}
+.veg-badge--inline {
+  position: static;
+  font-size: 0.5rem;
+  padding: 0.1rem 0.35rem;
+}
+.dish-badge--inline {
+  position: static;
+  font-size: 0.5rem;
+  padding: 0.15rem 0.4rem;
+}
+
 /* Dish info */
 .dish-info {
   flex: 1;

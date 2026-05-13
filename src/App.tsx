@@ -10,6 +10,8 @@ const CATEGORIES = [
   { id: 'couscous', name: 'Couscous', icon: '🍲' },
   { id: 'tajine', name: 'Tajine', icon: '🫕' },
   { id: 'padelle', name: 'Padelle', icon: '🍳' },
+  { id: 'caffetteria', name: 'Caffetteria & Tè', icon: '☕' },
+  { id: 'bevande', name: 'Bibite & Succhi', icon: '🥤' },
 ];
 
 /* ── Allergeni — Reg. UE 1169/2011 ── */
@@ -373,6 +375,124 @@ const MENU_DATA: Category[] = [
       },
     ],
   },
+  {
+    id: 'caffetteria',
+    name: 'Caffetteria & Tè',
+    subtitle: 'Caldi, aromatici, irresistibili',
+    dishes: [
+      {
+        name: 'Caffè Espresso',
+        desc: 'Espresso tradizionale italiano, cremoso e intenso.',
+        price: '1.20 €',
+        img: '/images/dish_0_11.jpeg',
+        allergens: [],
+      },
+      {
+        name: 'Caffè Macchiato',
+        desc: 'Espresso con uno schizzo di latte caldo montato.',
+        price: '1.30 €',
+        img: '/images/dish_0_11.jpeg',
+        allergens: ['L'],
+      },
+      {
+        name: 'Cappuccino',
+        desc: 'Espresso con latte montato a regola d\'arte, vellutato e caldo.',
+        price: '1.50 €',
+        img: '/images/dish_0_11.jpeg',
+        allergens: ['L'],
+      },
+      {
+        name: 'Latte Macchiato',
+        desc: 'Bicchiere di latte caldo con un tocco di caffè espresso.',
+        price: '2.00 €',
+        img: '/images/dish_0_11.jpeg',
+        allergens: ['L'],
+      },
+      {
+        name: 'Caffè d\'Orzo',
+        desc: 'Alternativa senza caffeina, dolce e tostata. Anche in versione macchiato.',
+        price: '1.50 €',
+        img: '/images/dish_0_12.jpeg',
+        allergens: ['G'],
+      },
+      {
+        name: 'Tè Marocchino alla Menta',
+        desc: 'Tè verde gunpowder con menta fresca, servito nel tradizionale bicchiere decorato. Profumato e cerimoniale.',
+        price: '2.50 €',
+        img: '/images/dish_0_3.jpeg',
+        badge: 'bestseller',
+        veg: true,
+        allergens: [],
+      },
+      {
+        name: 'Tè Misto (Menta & Verbena)',
+        desc: 'Blend aromatico di menta fresca e verbena, dolcificato con zucchero di canna.',
+        price: '2.50 €',
+        img: '/images/dish_0_8.jpeg',
+        badge: 'new',
+        veg: true,
+        allergens: [],
+      },
+    ],
+  },
+  {
+    id: 'bevande',
+    name: 'Bibite & Succhi',
+    subtitle: 'Freschi, naturali e in bottiglia',
+    dishes: [
+      {
+        name: 'Coca-Cola',
+        desc: 'Bibita gassata classica in lattina 0,33 cl. Anche in versione Zero.',
+        price: '2.50 €',
+        img: '/images/dish_1_21.jpeg',
+        allergens: [],
+      },
+      {
+        name: 'Fanta Arancia',
+        desc: 'Bibita gassata all\'arancia in lattina 0,33 cl.',
+        price: '2.50 €',
+        img: '/images/dish_1_21.jpeg',
+        allergens: [],
+      },
+      {
+        name: 'Sprite',
+        desc: 'Bibita gassata al limone e lime in lattina 0,33 cl.',
+        price: '2.50 €',
+        img: '/images/dish_1_21.jpeg',
+        allergens: [],
+      },
+      {
+        name: 'Acqua Naturale',
+        desc: 'Acqua minerale naturale in bottiglia 0,50 cl.',
+        price: '1.50 €',
+        img: '/images/dish_1_21.jpeg',
+        allergens: [],
+      },
+      {
+        name: 'Acqua Frizzante',
+        desc: 'Acqua minerale frizzante in bottiglia 0,50 cl.',
+        price: '1.50 €',
+        img: '/images/dish_1_21.jpeg',
+        allergens: [],
+      },
+      {
+        name: 'Succo di Frutta',
+        desc: 'Succo in brik — pesca, albicocca, ananas o ACE. Chiedi la disponibilità del giorno.',
+        price: '2.50 €',
+        img: '/images/dish_0_12.jpeg',
+        allergens: [],
+      },
+      {
+        name: 'Spremuta di Arancia',
+        desc: 'Arance fresche spremute al momento. Naturale, senza zuccheri aggiunti.',
+        price: '3.50 €',
+        img: '/images/dish_0_12.jpeg',
+        badge: 'chef',
+        veg: true,
+        allergens: [],
+      },
+    ],
+  },
 ];
 
 /* ── Badge config ── */
@@ -424,31 +544,41 @@ function DishCard({ dish, index }: { dish: Dish; index: number }) {
   return (
     <div
       ref={ref}
-      className={`dish-card${visible ? ' dish-card--visible' : ''}`}
+      className={`dish-card${visible ? ' dish-card--visible' : ''}${!dish.img ? ' dish-card--no-image' : ''}`}
       style={{ transitionDelay: `${index * 60}ms` }}
     >
-      <div className="dish-image-wrapper">
-        <img
-          src={dish.img}
-          alt={dish.name}
-          className="dish-image"
-          loading="lazy"
-          decoding="async"
-          width={280}
-          height={280}
-          onError={handleImageError}
-        />
-        {/* Badges */}
-        {dish.veg && <span className="veg-badge">VEG</span>}
-        {badge && (
-          <span className={`dish-badge ${badge.className}`}>
-            <span className="badge-icon">{badge.icon}</span>
-            {badge.label}
-          </span>
-        )}
-      </div>
+      {dish.img && (
+        <div className="dish-image-wrapper">
+          <img
+            src={dish.img}
+            alt={dish.name}
+            className="dish-image"
+            loading="lazy"
+            decoding="async"
+            width={280}
+            height={280}
+            onError={handleImageError}
+          />
+          {dish.veg && <span className="veg-badge">VEG</span>}
+          {badge && (
+            <span className={`dish-badge ${badge.className}`}>
+              <span className="badge-icon">{badge.icon}</span>
+              {badge.label}
+            </span>
+          )}
+        </div>
+      )}
       <div className="dish-info">
-        <h3 className="dish-title">{dish.name}</h3>
+        <div className="dish-title-row">
+          <h3 className="dish-title">{dish.name}</h3>
+          {!dish.img && dish.veg && <span className="veg-badge veg-badge--inline">VEG</span>}
+          {!dish.img && badge && (
+            <span className={`dish-badge dish-badge--inline ${badge.className}`}>
+              <span className="badge-icon">{badge.icon}</span>
+              {badge.label}
+            </span>
+          )}
+        </div>
         <p className="dish-desc">{dish.desc}</p>
         <div className="dish-price-row">
           <span className="dish-price">{dish.price}</span>
