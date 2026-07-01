@@ -75,15 +75,12 @@ const UPSELL_COMBOS: UpsellCombo[] = [
    solo se l'URL è presente.
    ══════════════════════════════════════ */
 const CONTACT = {
-  phone: '+39 XXX XXX XXXX',              // es. '+39 02 1234567'
-  whatsapp: '39XXXXXXXXXX',                // solo cifre, prefisso incluso: es. '393401234567'
-  instagram: '',                            // es. 'https://instagram.com/tuo_profilo' (vuoto = nascosto)
-  address: 'Indirizzo da inserire · 21047 Saronno (VA)',
-  mapsQuery: 'Qahwat Blu Caffé Saronno',   // usato per il link a Google Maps
-  hours: [
-    { d: 'Lun – Ven', h: '07:00 – 23:00' },
-    { d: 'Sab – Dom', h: '08:00 – 24:00' },
-  ] as { d: string; h: string }[],
+  phone: '+39 02 3823 9301',                // da scheda Google (verificato)
+  whatsapp: '',                              // ⚠️ da confermare: numero WhatsApp (vuoto = pulsanti nascosti)
+  instagram: '',                             // es. 'https://instagram.com/tuo_profilo' (vuoto = nascosto)
+  address: 'Via Caduti della Liberazione, 36 · 21047 Saronno (VA)',
+  mapsQuery: 'Qahwat Blu Caffè, Via Caduti della Liberazione 36, 21047 Saronno VA',
+  hours: [] as { d: string; h: string }[],   // ⚠️ da compilare con gli orari reali (Google mostra solo apertura ore 07)
 };
 
 const isSet = (v: string) => v.length > 0 && !/x{3,}/i.test(v);
@@ -590,7 +587,7 @@ export default function App() {
             Qahwat <span style={{ color: '#45d4ea' }}>Blu Caffé</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,.88)', fontSize: 'clamp(.7rem,.82rem + .1vw,.82rem)', fontWeight: 300, letterSpacing: '.12em', textTransform: 'uppercase', animation: 'heroIn .95s cubic-bezier(.16,1,.3,1) .15s both' }}>
-            Un angolo di Marocco nel cuore d'Italia
+            Un angolo di Marocco nel cuore di Saronno
           </p>
           <p style={{ color: 'rgba(69,212,234,.9)', fontSize: 'clamp(.68rem,.76rem + .1vw,.76rem)', fontFamily: "'Playfair Display',serif", fontStyle: 'italic', marginTop: '.65rem', animation: 'heroIn .95s cubic-bezier(.16,1,.3,1) .3s both' }}>
             Cucina autentica · Ingredienti freschi · Tradizione artigianale
@@ -601,13 +598,6 @@ export default function App() {
             <div style={{ width: 64, height: 1, background: 'linear-gradient(90deg,rgba(69,212,234,.65),transparent)' }} />
           </div>
 
-          {/* ── CTA contatti ── */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '.6rem', marginTop: '1.7rem', animation: 'heroIn .95s cubic-bezier(.16,1,.3,1) .55s both' }}>
-            {phoneReady && <HeroCta href={telHref} icon="📞" label="Chiama" />}
-            {waReady && <HeroCta href={waLink('Ciao! Vorrei avere informazioni.')} icon="💬" label="WhatsApp" external />}
-            <HeroCta href={mapsHref} icon="📍" label="Mappa" external />
-            {isSet(CONTACT.instagram) && <HeroCta href={CONTACT.instagram} icon="📷" label="Instagram" external />}
-          </div>
         </div>
       </header>
 
@@ -727,14 +717,16 @@ export default function App() {
             <div style={{ display: 'grid', gap: '.35rem', maxWidth: 320, margin: '0 auto', textAlign: 'center' }}>
               <p style={{ color: 'rgba(255,255,255,.7)', fontSize: '.72rem' }}>📍 {CONTACT.address}</p>
               {phoneReady && <p style={{ color: 'rgba(255,255,255,.7)', fontSize: '.72rem' }}>📞 {CONTACT.phone}</p>}
-              <div style={{ marginTop: '.5rem' }}>
-                <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '.62rem', fontWeight: 600, color: 'rgba(69,212,234,.85)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '.35rem' }}>Orari</p>
-                {CONTACT.hours.map((o, i) => (
-                  <p key={i} style={{ color: 'rgba(255,255,255,.62)', fontSize: '.72rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,.82)' }}>{o.d}</span> · {o.h}
-                  </p>
-                ))}
-              </div>
+              {CONTACT.hours.length > 0 && (
+                <div style={{ marginTop: '.5rem' }}>
+                  <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '.62rem', fontWeight: 600, color: 'rgba(69,212,234,.85)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '.35rem' }}>Orari</p>
+                  {CONTACT.hours.map((o, i) => (
+                    <p key={i} style={{ color: 'rgba(255,255,255,.62)', fontSize: '.72rem' }}>
+                      <span style={{ color: 'rgba(255,255,255,.82)' }}>{o.d}</span> · {o.h}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
