@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes heroIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{background:#f0f8fb;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+    :focus-visible{outline:2px solid #0daec8;outline-offset:2px;border-radius:4px}
+    img{content-visibility:auto;will-change:auto}
+    ::selection{background:#0daec8;color:#fff}
+    #nav-inner{-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    #nav-inner::-webkit-scrollbar{display:none}
+    button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    .mcard{will-change:transform}
+    .mcard:active{transform:scale(.98) translateZ(0);box-shadow:0 1px 6px rgba(6,24,37,.06) !important;transition:transform .1s ease,box-shadow .1s ease !important}
+    .mgrid{display:grid;grid-template-columns:1fr;gap:.75rem}
+    @media(min-width:600px){.mgrid{grid-template-columns:repeat(2,1fr);gap:.9rem}}
+    @media(min-width:960px){
+      .mgrid{grid-template-columns:repeat(3,1fr);gap:1.1rem}
+      .mgrid[data-one]{grid-template-columns:minmax(0,400px);margin:0 auto}
+      .mgrid[data-two]{grid-template-columns:repeat(2,1fr);max-width:780px;margin:0 auto}
+    }
+    @media(min-width:1200px){.mgrid{grid-template-columns:repeat(4,1fr)}}
+    @media(min-width:960px){
+      body{padding:2.5rem 0;background:linear-gradient(180deg,#c8e8f5 0%,#f0f8fb 22%)}
+      .shell{max-width:1120px;border-radius:24px;overflow:hidden;box-shadow:0 24px 64px rgba(6,24,37,.15),0 0 0 1px rgba(6,24,37,.07);margin:0 auto}
+    }
+    @media(max-width:959px){
+      .shell{box-shadow:none}
+    }
+    /* ── Small screens 375px ── */
+    @media(max-width:390px){
+      /* Hero più compatto */
+      header{padding:3rem 1rem 2.8rem !important}
+      header img{width:88px !important;height:88px !important;margin-bottom:.9rem !important}
+      /* Titoli sezione */
+      h2{font-size:1.45rem !important}
+      /* Card padding ridotto */
+      .mcard > div:last-child{padding:.75rem .85rem .85rem !important}
+      /* Nav pill più piccole */
+      #nav-inner button{font-size:.72rem !important;padding:.45rem .75rem !important}
+      /* Main padding */
+      #menu-main{padding:0 .6rem !important}
+      /* Footer */
+      footer .allergen-grid{grid-template-columns:1fr !important}
+    }
+    /* ── iPhone SE / schermi ultra-stretti 320-340px ── */
+    @media(max-width:345px){
+      #nav-bar{height:52px !important}
+      #nav-inner{gap:.22rem !important}
+      #nav-inner button{font-size:.66rem !important;padding:.4rem .58rem !important;min-height:36px !important;gap:.22rem !important}
+      #nav-inner button span{font-size:.8rem !important}
+      header{padding:2.6rem .8rem 2.4rem !important}
+      header img{width:76px !important;height:76px !important}
+      h1{font-size:1.55rem !important}
+    }
+    /* Assicura leggibilità testo card su qualunque telefono */
+    @media(max-width:400px){
+      .mcard h3{font-size:1rem !important}
+      .mcard p{font-size:.76rem !important;line-height:1.5 !important}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+    }
+  </style>
+</helmet>
+
+<div class="shell" style="min-height:100vh;min-height:100dvh;background:#f0f8fb;font-family:'DM Sans',system-ui,sans-serif;color:#082030;">
+
+  <!-- HERO -->
+  <header style="background:linear-gradient(160deg,#071e2e 0%,#0a2d44 38%,#0d3858 72%,#092840 100%);text-align:center;padding:4.5rem 2rem 3.8rem;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 28% 88%,rgba(13,174,200,.14) 0%,transparent 52%),radial-gradient(ellipse at 78% 14%,rgba(13,174,200,.08) 0%,transparent 48%);pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(255,255,255,.006) 60px,rgba(255,255,255,.006) 61px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(to top,#f0f8fb,transparent);pointer-events:none;"></div>
+    <div style="position:relative;z-index:2;">
+      <img src="logo.png" alt="Qahwat Blu Caffé" loading="eager" style="width:118px;height:118px;object-fit:contain;border-radius:50%;display:block;margin:0 auto 1.3rem;filter:drop-shadow(0 4px 28px rgba(0,0,0,.55));animation:heroIn .95s cubic-bezier(.16,1,.3,1) .05s both;">
+      <h1 style="font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:clamp(1.8rem,7vw,3.1rem);font-weight:700;letter-spacing:.02em;margin-bottom:.5rem;animation:heroIn .95s cubic-bezier(.16,1,.3,1) both;text-shadow:0 3px 32px rgba(0,0,0,.45);">Qahwat <span style="color:#45d4ea;">Blu Caffé</span></h1>
+      <p style="color:rgba(255,255,255,.88);font-size:clamp(.7rem,.82rem + .1vw,.82rem);font-weight:300;letter-spacing:.12em;text-transform:uppercase;animation:heroIn .95s cubic-bezier(.16,1,.3,1) .15s both;">Un angolo di Marocco nel cuore di Saronno</p>
+      <p style="color:rgba(69,212,234,.9);font-size:clamp(.68rem,.76rem + .1vw,.76rem);font-family:'Playfair Display',serif;font-style:italic;margin-top:.65rem;animation:heroIn .95s cubic-bezier(.16,1,.3,1) .3s both;">Cucina autentica · Ingredienti freschi · Tradizione artigianale</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:.85rem;margin-top:1.9rem;animation:heroIn .95s cubic-bezier(.16,1,.3,1) .42s both;">
+        <div style="width:64px;height:1px;background:linear-gradient(90deg,transparent,rgba(69,212,234,.65));"></div>
+        <div style="width:8px;height:8px;background:#0daec8;transform:rotate(45deg);box-shadow:0 0 12px rgba(13,174,200,.6);"></div>
+        <div style="width:64px;height:1px;background:linear-gradient(90deg,rgba(69,212,234,.65),transparent);"></div>
+      </div>
+    </div>
+  </header>
+
+  {{ nav }}
+
+  <main id="menu-main" style="max-width:1120px;margin:0 auto;padding:0 max(.75rem,env(safe-area-inset-left));padding-left:max(.75rem,env(safe-area-inset-left));padding-right:max(.75rem,env(safe-area-inset-right));">
+    {{ main }}
+  </main>
+
+  <footer style="background:linear-gradient(160deg,#071e2e 0%,#0a2d44 45%,#092840 100%);position:relative;overflow:hidden;margin-top:2rem;">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(13,174,200,.35),transparent);"></div>
+    <div style="text-align:center;padding:2.5rem 1.5rem calc(2.2rem + env(safe-area-inset-bottom));position:relative;">
+      <div style="font-family:'Playfair Display',serif;color:#45d4ea;font-size:1.3rem;font-weight:600;letter-spacing:.03em;margin-bottom:.4rem;">Qahwat Blu Caffé</div>
+      <div style="width:36px;height:1px;background:rgba(13,174,200,.38);margin:.5rem auto;"></div>
+      <p style="color:rgba(255,255,255,.78);font-family:'Playfair Display',serif;font-style:italic;font-size:.82rem;margin-bottom:.3rem;">Dove ogni piatto racconta una storia</p>
+      <p style="color:rgba(255,255,255,.58);font-size:.68rem;letter-spacing:.04em;">Menu digitale · Tutti i prezzi sono IVA inclusa</p>
+      {{ allergenLegend }}
+    </div>
+  </footer>
+
+  {{ backToTop }}
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+/* ── Data ─────────────────────────────────────────────────── */
+const CATS = [
+  {id:'colazione',name:'Colazione',icon:'☕'},
+  {id:'msemen',name:'Msemen & Brioche',icon:'🥐'},
+  {id:'caffetteria',name:'Caffetteria & Tè',icon:'🍵'},
+  {id:'antipasti',name:'Antipasti',icon:'🍽️'},
+  {id:'insalate',name:'Insalate',icon:'🥗'},
+  {id:'tacos',name:'Tacos-Msemen',icon:'🌮'},
+  {id:'couscous',name:'Couscous',icon:'🍲'},
+  {id:'tajine',name:'Tajine',icon:'🫕'},
+  {id:'padelle',name:'Padelle',icon:'🍳'},
+  {id:'bevande',name:'Bibite & Succhi',icon:'🥤'},
+  {id:'kohl',name:'Succhi Kohl',icon:'🍎'},
+];
+
+const AL = {G:'Glutine',C:'Crostacei',U:'Uova',P:'Pesce',A:'Arachidi',S:'Soia',L:'Latte',F:'Frutta a guscio',Se:'Sedano',Sn:'Senape',Ss:'Sesamo',So:'Solfiti',Lu:'Lupini',M:'Molluschi'};
+
+const BADGE_CFG = {
+  bestseller:{label:'Best Seller',icon:'⭐',bg:'rgba(244,185,30,.92)',color:'#071e2e'},
+  new:{label:'Novità',icon:'✨',bg:'rgba(7,30,46,.92)',color:'#f0f8fb'},
+  chef:{label:'Scelta Chef',icon:'👨‍🍳',bg:'#0daec8',color:'#fff'},
+};
+
+const UPSELL = [
+  {emoji:'☕',title:'Combo Colazione',items:'Combo Completo + Spremuta fresca',saving:'A partire da 8.50 €'},
+  {emoji:'🌮',title:'Menu Tacos Completo',items:'Tacos-Msemen + Patatine + Bibita',saving:'Solo 15.00 €'},
+  {emoji:'🫕',title:'Esperienza Marocco',items:'Tajine + Couscous + Tè alla menta',saving:'Chiedi al bancone'},
+];
+
+const MENU = [
+  {id:'colazione',name:'Colazione',subtitle:'Inizia la giornata con gusto',dishes:[
+    {name:'Combo Base',desc:'Caffetteria a scelta, msemen o batbout con miele, formaggio, olive e mortadella.',price:'6.00 €',img:'/images/dish_0_2.jpeg',badge:'bestseller',allergens:['G','L','So']},
+    {name:'Combo Brioche',desc:'Caffetteria a scelta con brioche fragrante e farcitura del giorno.',price:'3.00 €',img:'/images/dish_0_6.jpeg',allergens:['G','U','L']},
+    {name:'Combo Completo',desc:'Spremuta fresca, caffetteria, panetteria artigianale e tutti i contorni.',price:'8.50 €',img:'/images/dish_0_5.jpeg',badge:'chef',allergens:['G','L','U']},
+    {name:'Combo Harira',desc:'Colazione calda con zuppa harira speziata, panetteria e contorni tradizionali.',price:'10.00 €',img:'/images/dish_0_17.jpeg',allergens:['G','Se','So']},
+    {name:'Combo Omelette',desc:'Spremuta fresca, caffetteria, batbout caldo e omelette dorata al momento.',price:'11.00 €',img:'/images/dish_0_4.jpeg',badge:'new',allergens:['G','U','L']},
+  ]},
+  {id:'msemen',name:'Msemen & Brioche',subtitle:'Sfoglie dolci farcite artigianali',dishes:[
+    {name:'Msemen Fondente',desc:'Sfoglia arrotolata con ganache fondente, fragole fresche.',price:'4.00 €',img:'/images/msemen_1.jpeg',badge:'bestseller',allergens:['G','L','U'],imgFit:'contain',imgH:220,bg:'#0d0806'},
+    {name:'Msemen Bianco',desc:'Sfoglia croccante con cioccolato bianco cremoso, fragole di stagione e banana fresca.',price:'4.00 €',img:'/images/msemen_2.jpeg',allergens:['G','L','U'],imgFit:'contain',imgH:220,bg:'#0d0806'},
+    {name:'Msemen Pistacchio',desc:'Msemen soffice con crema di pistacchio, panna montata fresca e granella croccante.',price:'4.00 €',img:'/images/msemen_3.jpeg',badge:'chef',allergens:['G','L','F'],imgFit:'contain',imgH:220,bg:'#0d0806'},
+    {name:'Msemen Cioccolato',desc:'Msemen artigianale con cioccolato al latte, fragole di stagione e banana.',price:'4.00 €',img:'/images/msemen_4.jpeg',allergens:['G','L','U'],imgFit:'contain',imgH:220,bg:'#0d0806'},
+    {name:'Brioche Pistacchio',desc:'Cornetto soffice ripieno di crema pistacchio premium, finito con zucchero a velo.',price:'4.00 €',img:'/images/brioche_1.jpeg',badge:'new',allergens:['G','L','U','F'],imgFit:'contain',imgH:220,bg:'#0d0806'},
+  ]},
+  {id:'caffetteria',name:'Caffetteria & Tè',subtitle:'Caldi, aromatici, irresistibili',dishes:[
+    {name:'Caffè Espresso',desc:'Espresso tradizionale italiano, cremoso e intenso.',price:'1.20 €',img:'/images/caf_espresso_opt.png',allergens:[]},
+    {name:'Caffè Macchiato',desc:'Espresso con uno schizzo di latte caldo montato.',price:'1.30 €',img:'/images/caf_macchiato_opt.png',allergens:['L']},
+    {name:'Cappuccino',desc:"Espresso con latte montato a regola d'arte, vellutato e caldo.",price:'1.50 €',img:'/images/caf_cappuccino_opt.png',allergens:['L']},
+    {name:'Latte Macchiato',desc:'Bicchiere di latte caldo con un tocco di caffè espresso.',price:'2.00 €',img:'/images/caf_latte_opt.png',allergens:['L'],imgFit:'contain',bg:'linear-gradient(160deg,#e8e0d0,#d4c8b0)'},
+    {name:"Caffè d'Orzo",desc:'Alternativa senza caffeina, dolce e tostata. Anche in versione macchiato.',price:'1.50 €',img:'/images/caf_orzo_opt.png',allergens:['G']},
+    {name:'Tè Marocchino alla Menta',desc:'Tè verde gunpowder con menta fresca, servito nel tradizionale bicchiere decorato.',price:'2.50 €',img:'/images/dish_0_14.jpeg',badge:'bestseller',veg:true,allergens:[]},
+    {name:'Tè Misto (Menta & Verbena)',desc:'Blend aromatico di menta fresca e verbena, dolcificato con zucchero di canna.',price:'2.50 €',img:'/images/dish_0_9.jpeg',badge:'new',veg:true,allergens:[]},
+  ]},
+  {id:'antipasti',name:'Antipasti',subtitle:'Per iniziare alla grande',dishes:[
+    {name:'Patatine Croccanti',desc:'Fritte al momento, dorate e irresistibili.',price:'3.50 €',img:'/images/dish_2_24.jpeg',allergens:[]},
+    {name:'Zaalouk',desc:'Melanzane affumicate e peperoni, un concentrato di spezie orientali.',price:'5.50 €',img:'/images/dish_2_32.jpeg',veg:true,allergens:['Se','So']},
+    {name:'Insalata Marocchina',desc:'Pomodori, cetrioli croccanti e cipolla dolce tagliati a mano.',price:'4.00 €',img:'/images/dish_2_41.jpeg',veg:true,allergens:[]},
+    {name:'Bestila di Pollo',desc:'Fillo croccante, pollo speziato, mandorle tostate e cannella dorata.',price:'7.50 €',img:'/images/dish_2_36.jpeg',badge:'chef',allergens:['G','U','F']},
+    {name:'Bestila di Pesce',desc:'Mare in crosta: gamberi, calamari, pesce bianco e spezie agrumati.',price:'8.00 €',img:'/images/dish_2_43.jpeg',badge:'new',allergens:['G','U','C','P','M']},
+    {name:'Sigari Croccanti',desc:'Involtini fillo dorati con manzo, cumino, paprica e prezzemolo.',price:'8.00 €',img:'/images/dish_2_45.jpeg',badge:'bestseller',allergens:['G','U','So']},
+  ]},
+  {id:'insalate',name:'Insalate',subtitle:'Fresche e generose',dishes:[
+    {name:'Caesar Blu Caffè',desc:'Pollo allo zafferano, mandorle croccanti, sesamo nero, grana a scaglie.',price:'9.00 €',img:'/images/dish_2_28.jpeg',small:'6.00 €',badge:'bestseller',allergens:['L','F','Ss']},
+    {name:'Insalata Rustica',desc:'Tonno pregiato, uova sode, mais dolce, carote julienne e olio EVO.',price:'10.00 €',img:'/images/dish_2_26.jpeg',small:'7.00 €',allergens:['P','U','So']},
+  ]},
+  {id:'tacos',name:'Tacos-Msemen',subtitle:'Street food marocchino rivisitato',dishes:[
+    {name:'Pollo Classic',desc:'Pollo croccante, patatine dorate, cheddar filante, salsa algerienne intensa.',price:'12.00 €',img:'/images/dish_1_18.jpeg',badge:'bestseller',allergens:['G','L','U','So'],imgPos:'center 20%'},
+    {name:'Pollo Fresh',desc:'Pollo tenero, pomodoro fresco, cipolla a cubetti, lattuga croccante.',price:'12.00 €',img:'/images/dish_1_23.jpeg',allergens:['G'],imgPos:'center 30%'},
+    {name:'Manzo BBQ',desc:'Manzo macinato saporito, cipolla caramellata e salsa BBQ affumicata.',price:'12.00 €',img:'/images/tacos_manzo_bbq_opt.png',badge:'chef',allergens:['G','So'],imgPos:'center 55%'},
+    {name:'Manzo & Cheddar',desc:'Macinato di manzo speziato, peperoni croccanti e cheddar fuso.',price:'12.00 €',img:'/images/tacos_manzo_cheddar_opt.png',allergens:['G','L'],imgPos:'center 50%'},
+    {name:'Merguez Classic',desc:'Salsiccia merguez piccante, cheddar, salsa algerienne e ketchup selezionato.',price:'12.00 €',img:'/images/tacos_merguez_classic_opt.png',allergens:['G','L','U','So'],imgPos:'center 50%'},
+    {name:'Merguez Fresh',desc:'Merguez alla griglia, pomodoro e cipolla, lattuga fresca e salsa.',price:'12.00 €',img:'/images/tacos_merguez_fresh_opt.png',allergens:['G','So'],imgPos:'center 50%'},
+    {name:'Menu Combo Tacos',desc:'Tacos-Msemen a scelta + patatine croccanti + bibita in vetro.',price:'15.00 €',img:'/images/dish_1_21.jpeg',badge:'bestseller',allergens:['G','L','U','So'],imgPos:'center 40%'},
+  ]},
+  {id:'couscous',name:'Couscous',subtitle:'Tradizione a vapore',dishes:[
+    {name:'Couscous della Casa',desc:"Sgranato a mano, carne tenera, verdure, brodo speziato e Tfaya d'autore.",price:'13.00 €',img:'/images/dish_2_30.jpeg',small:'11.00 €',badge:'chef',allergens:['G','Se']},
+    {name:'Couscous Vegetariano',desc:'Semola sgranata a vapore con verdure di stagione, ceci, brodo speziato e salsa harissa delicata.',price:'11.00 €',img:'/images/dish_2_30.jpeg',veg:true,allergens:['G','Se']},
+  ]},
+  {id:'tajine',name:'Tajine',subtitle:'Cottura lenta, sapori intensi',dishes:[
+    {name:'Tajine di Pollo',desc:'Pollo marinato e dorato in forno, cipolle, limone, olive e patate.',price:'14.00 €',img:'/images/dish_3_64.jpeg',badge:'bestseller',allergens:['So']},
+    {name:'Tajine di Manzo',desc:'Manzo cotto lentamente con prugne caramellate e spezie marocchine.',price:'15.00 €',img:'/images/dish_3_69.jpeg',badge:'chef',allergens:['So','F']},
+    {name:'Tajine Polpette',desc:'Polpette speziate in salsa di pomodoro ricca, erbe fresche e pane caldo.',price:'16.50 €',img:'/images/dish_2_47.jpeg',allergens:['G','U','Se']},
+  ]},
+  {id:'padelle',name:'Padelle',subtitle:'Sfrigolanti e saporite',dishes:[
+    {name:'Padella Trita',desc:'Carne tritata, uova, pomodoro, formaggio fuso, prezzemolo e coriandolo.',price:'10.00 €',img:'/images/dish_3_56.jpeg',small:'8.00 €',badge:'bestseller',allergens:['U','L']},
+    {name:'Padella Salsiccia',desc:'Salsiccia saporita, uova strapazzate, pomodoro e formaggio filante.',price:'9.00 €',img:'/images/dish_3_58.jpeg',allergens:['U','L','So']},
+    {name:'Padella Gamberi',desc:'Gamberi saltati, uova, pomodoro, coriandolo fresco e pane croccante.',price:'11.00 €',img:'/images/dish_3_62.jpeg',badge:'new',allergens:['C','U','G']},
+  ]},
+  {id:'bevande',name:'Bibite & Succhi',subtitle:'Freschi, naturali e in bottiglia',dishes:[
+    {name:'Coca-Cola',desc:'Bibita gassata classica in lattina 0,33 cl. Anche in versione Zero.',price:'2.50 €',img:'/images/bev_cocacola.jpeg',allergens:[],imgFit:'cover',imgPos:'center 30%',bg:'linear-gradient(160deg,#5c0a15 0%,#b80d26 55%,#8c0a1e 100%)'},
+    {name:'Fanta Arancia',desc:"Bibita gassata all'arancia in lattina 0,33 cl.",price:'2.50 €',img:'/images/bev_fanta.jpeg',allergens:[],imgFit:'cover',imgPos:'center 30%',bg:'linear-gradient(160deg,#8c3200 0%,#d95c00 55%,#b84800 100%)'},
+    {name:'Sprite',desc:'Bibita gassata al limone e lime in lattina 0,33 cl.',price:'2.50 €',img:'/images/bev_sprite.jpeg',allergens:[],imgFit:'cover',imgPos:'center 30%',bg:'linear-gradient(160deg,#0a3c12 0%,#1a7a28 55%,#0d5218 100%)'},
+    {name:'Acqua Naturale',desc:'Acqua minerale naturale in bottiglia 0,50 cl.',price:'1.50 €',img:'/images/bev_acqua_naturale.jpeg',allergens:[],imgFit:'cover',imgPos:'center 40%',bg:'linear-gradient(160deg,#052840 0%,#0a5a96 55%,#083566 100%)'},
+    {name:'Acqua Frizzante',desc:'Acqua minerale frizzante in bottiglia 0,50 cl.',price:'1.50 €',img:'/images/bev_acqua_frizzante.jpeg',allergens:[],imgFit:'cover',imgPos:'center 40%',bg:'linear-gradient(160deg,#062e50 0%,#0e68b0 55%,#093e6a 100%)'},
+    {name:'Succo di Frutta',desc:'Succo in brik — pesca, albicocca, ananas o ACE. Chiedi la disponibilità del giorno.',price:'2.50 €',img:'/images/dish_0_12.jpeg',allergens:[],imgFit:'cover',imgPos:'center center',bg:'linear-gradient(160deg,#4a2200 0%,#9a5000 55%,#6a3400 100%)'},
+    {name:'Spremuta di Arancia',desc:'Arance fresche spremute al momento. Naturale, senza zuccheri aggiunti.',price:'3.50 €',img:'/images/spremuta_arancia.jpeg',badge:'chef',veg:true,allergens:[],imgFit:'cover',imgPos:'center center'},
+  ]},
+  {id:'kohl',name:'Succhi Kohl',subtitle:"In collaborazione con Kohl · Succhi di mela dell'Alto Adige",dishes:[
+    {name:'Gravensteiner',desc:'Succo di mela monovarietà Gravensteiner: aromatico, fresco e leggermente acidulo.',price:'6.20 €',img:'/images/kohl_gravensteiner.jpeg',veg:true,badge:'new',imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#f0ece0,#ddd4b8)'},
+    {name:'Mela & Ribes Nero',desc:'Mela di montagna e ribes nero: corposo, fruttato e dal colore intenso.',price:'6.20 €',img:'/images/kohl_ribes_nero.jpeg',veg:true,imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#1a0a28,#38103c)'},
+    {name:'Mela & Albicocca',desc:'Mela e albicocca: dolce, vellutato e profumato.',price:'6.20 €',img:'/images/kohl_albicocca.jpeg',veg:true,imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#f0e8d8,#ddc8a0)'},
+    {name:'Mela & Mirtillo Selvatico',desc:'Mela e mirtillo selvatico di montagna: ricco, scuro e dal carattere deciso.',price:'7.20 €',img:'/images/kohl_mirtillo_selvatico.jpeg',veg:true,badge:'chef',imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#140820,#2a0a30)'},
+    {name:'Mela & Pera',desc:'Mela e pera: delicato, morbido e naturalmente dolce.',price:'6.20 €',img:'/images/kohl_pera.jpeg',veg:true,imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#eef0e4,#d4d8c0)'},
+    {name:'Mela & Fiori di Sambuco',desc:'Mela e fiori di sambuco: floreale, fresco e profumato.',price:'6.20 €',img:'/images/kohl_fiori_di_sambuco.jpeg',veg:true,imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#f0ecf4,#d8cce8)'},
+    {name:'Mela & Menta',desc:"Mela e menta: dissetante e rinfrescante, ideale d'estate.",price:'6.20 €',img:'/images/kohl_menta.jpeg',veg:true,imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#e4f0e8,#b8d8c0)'},
+    {name:'Mela & Pesca',desc:'Mela e pesca: rotondo, succoso e dal gusto estivo.',price:'6.20 €',img:'/images/kohl_pesca.jpeg',veg:true,imgFit:'contain',imgH:230,bg:'linear-gradient(160deg,#f4e8d8,#e0c090)'},
+  ]},
+];
+
+/* ── Component ────────────────────────────────────────────── */
+class Component extends DCLogic {
+  state = { active: 'colazione', showTop: false, openA: {}, navAtStart: true, navAtEnd: false };
+
+  get isTouch() { return window.matchMedia('(hover:none)').matches; }
+
+  haptic(type = 'light') {
+    if (!navigator.vibrate) return;
+    const patterns = { light: 8, medium: 18, heavy: 32, success: [10, 50, 10] };
+    navigator.vibrate(patterns[type] ?? 8);
+  }
+
+  componentDidMount() {
+    // Scroll spy
+    const secs = CATS.map(c => document.getElementById(c.id)).filter(Boolean);
+    this._obs = new IntersectionObserver(entries => {
+      const vis = entries.filter(e => e.isIntersecting);
+      if (!vis.length) return;
+      const top = vis.reduce((a, b) => a.boundingClientRect.top <= b.boundingClientRect.top ? a : b);
+      const id = top.target.id;
+      this.setState({ active: id });
+      const ni = document.getElementById('nav-inner');
+      const btn = document.getElementById('nb-' + id);
+      if (ni && btn) {
+        const nr = ni.getBoundingClientRect(), br = btn.getBoundingClientRect();
+        ni.scrollTo({ left: ni.scrollLeft + br.left - nr.left - nr.width / 2 + br.width / 2, behavior: 'smooth' });
+      }
+    }, { rootMargin: '-10% 0px -75% 0px', threshold: 0 });
+    secs.forEach(s => this._obs.observe(s));
+    // Back to top — throttled for perf
+    let ticking = false;
+    this._onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          this.setState({ showTop: window.scrollY > 400 });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+  }
+
+  componentWillUnmount() {
+    this._obs && this._obs.disconnect();
+    this._navResizeObs && this._navResizeObs.disconnect();
+    window.removeEventListener('scroll', this._onScroll);
+  }
+
+  goTo(id) {
+    this.haptic('light');
+    this.setState({ active: id }); // feedback immediato, non aspetta lo scroll-spy
+    const el = document.getElementById(id);
+    if (!el) return;
+    const nb = document.getElementById('nav-bar');
+    const nh = nb ? nb.offsetHeight : 58;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - nh - 8, behavior: 'smooth' });
+  }
+
+  setupNavDrag(ni) {
+    if (!ni || this._dragSetup) return;
+    this._dragSetup = true;
+    let isDown = false, startX = 0, startScroll = 0, moved = false;
+    ni.style.cursor = 'grab';
+    ni.addEventListener('mousedown', ev => {
+      isDown = true; moved = false;
+      startX = ev.pageX; startScroll = ni.scrollLeft;
+      ni.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mouseup', () => { isDown = false; ni.style.cursor = 'grab'; });
+    window.addEventListener('mousemove', ev => {
+      if (!isDown) return;
+      const dx = ev.pageX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      ni.scrollLeft = startScroll - dx;
+    });
+    // Prevent click-through when it was actually a drag
+    ni.addEventListener('click', ev => {
+      if (moved) { ev.stopPropagation(); ev.preventDefault(); }
+    }, true);
+    // Traccia posizione scroll per mostrare/nascondere frecce e fade laterali.
+    // Se non c'è overflow (nav intera su schermi larghi), atStart e atEnd sono
+    // entrambi true → frecce e fade restano nascosti.
+    const updateFade = () => {
+      const overflows = ni.scrollWidth > ni.clientWidth + 2;
+      const atStart = !overflows || ni.scrollLeft <= 2;
+      const atEnd = !overflows || ni.scrollLeft >= ni.scrollWidth - ni.clientWidth - 2;
+      this.setState(s => (s.navAtStart === atStart && s.navAtEnd === atEnd) ? null : { navAtStart: atStart, navAtEnd: atEnd });
+    };
+    ni.addEventListener('scroll', updateFade, { passive: true });
+    updateFade();
+    requestAnimationFrame(updateFade);
+    // ResizeObserver copre anche i cambi di layout (font caricati, zoom, ecc.), non solo il resize finestra
+    if (window.ResizeObserver) {
+      this._navResizeObs = new ResizeObserver(updateFade);
+      this._navResizeObs.observe(ni);
+    }
+    window.addEventListener('resize', updateFade);
+  }
+
+  toggleA(key) {
+    this.haptic('light');
+    this.setState(s => ({ openA: { ...s.openA, [key]: !s.openA[key] } }));
+  }
+
+  scrollNav(dir) {
+    this.haptic('light');
+    const ni = document.getElementById('nav-inner');
+    if (ni) ni.scrollBy({ left: dir * 180, behavior: 'smooth' });
+  }
+
+  img(path) { return 'images' + path; }
+
+  renderVals() {
+    const { active, showTop, openA, navAtStart, navAtEnd } = this.state;
+    const e = React.createElement;
+    return {
+      nav: this.buildNav(e, active, navAtStart, navAtEnd),
+      main: this.buildMain(e, openA),
+      allergenLegend: this.buildLegend(e),
+      backToTop: this.buildBTT(e, showTop),
+    };
+  }
+
+  /* ── Nav ── */
+  buildNav(e, active, navAtStart, navAtEnd) {
+    return e('nav', {
+      id: 'nav-bar',
+      style: { position:'sticky', top:0, background:'rgba(240,248,251,.96)', backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)', zIndex:100, borderBottom:'1px solid rgba(6,24,37,.07)', height:58, display:'flex', alignItems:'center', boxShadow:'0 1px 8px rgba(6,24,37,.05)' }
+    },
+      e('div', { style:{ position:'relative', width:'100%', height:'100%', display:'flex', alignItems:'center' } },
+        e('div', {
+          id: 'nav-inner',
+          ref: this.setupNavDrag.bind(this),
+          style: { display:'flex', overflowX:'auto', padding:'0 .75rem', paddingLeft: navAtStart ? 'max(.75rem,env(safe-area-inset-left))' : 34, paddingRight: navAtEnd ? 'max(.75rem,env(safe-area-inset-right))' : 34, gap:'.35rem', scrollbarWidth:'none', width:'100%', maxWidth:1120, margin:'0 auto', scrollBehavior:'smooth' }
+        },
+          CATS.map(cat => {
+            const isActive = active === cat.id;
+            return e('button', {
+              key: cat.id,
+              id: 'nb-' + cat.id,
+              onClick: () => this.goTo(cat.id),
+              onMouseEnter: ev => { if (!isActive) { ev.currentTarget.style.background = 'rgba(13,174,200,.12)'; ev.currentTarget.style.borderColor = 'rgba(13,174,200,.3)'; ev.currentTarget.style.color = '#0779a0'; } },
+              onMouseLeave: ev => { if (!isActive) { ev.currentTarget.style.background = 'none'; ev.currentTarget.style.borderColor = 'transparent'; ev.currentTarget.style.color = '#1a4a62'; } },
+              style: { background: isActive ? '#0daec8' : 'none', border: '1.5px solid ' + (isActive ? '#0daec8' : 'transparent'), color: isActive ? '#fff' : '#1a4a62', fontFamily:"'DM Sans',sans-serif", fontSize:'.78rem', fontWeight: isActive ? 600 : 500, cursor:'pointer', padding:'.55rem .9rem', minHeight:40, borderRadius:28, transition:'all .18s cubic-bezier(.16,1,.3,1)', display:'flex', alignItems:'center', gap:'.3rem', flexShrink:0, whiteSpace:'nowrap', boxShadow: isActive ? '0 3px 14px rgba(13,174,200,.38)' : 'none', letterSpacing: isActive ? '.01em' : 'normal' }
+            },
+              e('span', { style:{ fontSize:'.9rem', lineHeight:1 } }, cat.icon),
+              cat.name
+            );
+          })
+        ),
+        // Fade sinistro
+        e('div', { style:{ position:'absolute', left:0, top:0, bottom:0, width:44, background:'linear-gradient(90deg,rgba(240,248,251,.98) 20%,transparent)', pointerEvents:'none', opacity: navAtStart ? 0 : 1, transition:'opacity .2s ease' } }),
+        // Fade destro
+        e('div', { style:{ position:'absolute', right:0, top:0, bottom:0, width:44, background:'linear-gradient(270deg,rgba(240,248,251,.98) 20%,transparent)', pointerEvents:'none', opacity: navAtEnd ? 0 : 1, transition:'opacity .2s ease' } }),
+        // Freccia sinistra cliccabile
+        !navAtStart && e('button', {
+          onClick: () => this.scrollNav(-1),
+          'aria-label': 'Categorie precedenti',
+          style:{ position:'absolute', left:2, top:'50%', transform:'translateY(-50%)', width:32, height:32, borderRadius:'50%', background:'#fff', border:'1px solid rgba(6,24,37,.12)', boxShadow:'0 2px 8px rgba(6,24,37,.15)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', zIndex:2, color:'#0779a0', fontSize:'.85rem', lineHeight:1, padding:0 }
+        }, '‹'),
+        // Freccia destra cliccabile
+        !navAtEnd && e('button', {
+          onClick: () => this.scrollNav(1),
+          'aria-label': 'Altre categorie',
+          style:{ position:'absolute', right:2, top:'50%', transform:'translateY(-50%)', width:32, height:32, borderRadius:'50%', background:'#fff', border:'1px solid rgba(6,24,37,.12)', boxShadow:'0 2px 8px rgba(6,24,37,.15)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', zIndex:2, color:'#0779a0', fontSize:'.85rem', lineHeight:1, padding:0 }
+        }, '›')
+      )
+    );
+  }
+
+  /* ── Main content ── */
+  buildMain(e, openA) {
+    const sections = MENU.map((cat, ci) => this.buildSection(e, cat, ci, openA));
+    return e(React.Fragment, null, ...sections);
+  }
+
+  /* ── Section ── */
+  buildSection(e, cat, catIndex, openA) {
+    const isContain = cat.id === 'kohl' || cat.id === 'bevande';
+    const cards = cat.dishes.map((d, i) => this.buildCard(e, d, i, cat.id, isContain, openA));
+    const gridProps = { className: 'mgrid', 'data-count': cat.dishes.length };
+    if (cat.dishes.length === 1) gridProps['data-one'] = '';
+    else if (cat.dishes.length === 2) gridProps['data-two'] = '';
+
+    return e('section', { id: cat.id, key: cat.id, style:{ padding:'2.4rem 0 1.2rem', contentVisibility:'auto', containIntrinsicSize:'0 620px' } },
+      // Header
+      e('div', { style:{ textAlign:'center', marginBottom:'1.7rem' } },
+        e('h2', { style:{ fontFamily:"'Playfair Display',Georgia,serif", fontSize:'clamp(1.75rem,5vw,2.1rem)', fontWeight:700, color:'#082030', marginBottom:'.22rem', letterSpacing:'.01em' } }, cat.name),
+        cat.subtitle && e('p', { style:{ fontSize:'.78rem', color:'#1a4a62', fontStyle:'italic', fontFamily:"'Playfair Display',serif", letterSpacing:'.025em', marginBottom:'.4rem' } }, cat.subtitle),
+        e('div', { style:{ display:'flex', alignItems:'center', justifyContent:'center', gap:'.55rem', marginTop:'.45rem' } },
+          e('div', { style:{ width:30, height:'1.5px', background:'linear-gradient(90deg,transparent,#0daec8)', borderRadius:2 } }),
+          e('div', { style:{ width:5, height:5, borderRadius:'50%', background:'#0daec8', boxShadow:'0 0 7px rgba(13,174,200,.45)' } }),
+          e('div', { style:{ width:30, height:'1.5px', background:'linear-gradient(90deg,#0daec8,transparent)', borderRadius:2 } })
+        )
+      ),
+      e('div', gridProps, ...cards),
+      catIndex === 1 && this.buildUpsell(e)
+    );
+  }
+
+  /* ── Dish Card ── */
+  buildCard(e, dish, index, catId, isContain, openA) {
+    const b = dish.badge ? BADGE_CFG[dish.badge] : null;
+    const delay = Math.min(index, 5) * 40;
+    const imgH = 172;
+    const imgFit = dish.imgFit || (isContain ? 'contain' : 'cover');
+    const imgBg = dish.bg || (isContain ? '#e8f5fa' : '#061825');
+    const imgPos = dish.imgPos || 'center center';
+    const cardImgH = dish.imgH || imgH;
+    const imgPad = 0;
+
+    const hoverProps = this.isTouch ? {} : {
+      onMouseEnter: ev => {
+        ev.currentTarget.style.transform = 'translateY(-4px) translateZ(0)';
+        ev.currentTarget.style.boxShadow = '0 10px 32px rgba(6,24,37,.13)';
+        const img = ev.currentTarget.querySelector('img');
+        if (img) img.style.transform = 'scale(1.05)';
+      },
+      onMouseLeave: ev => {
+        ev.currentTarget.style.transform = '';
+        ev.currentTarget.style.boxShadow = '0 2px 14px rgba(6,24,37,.06)';
+        const img = ev.currentTarget.querySelector('img');
+        if (img) img.style.transform = '';
+      },
+    };
+    return e('div', {
+      key: index,
+      className: 'mcard',
+      onTouchStart: () => this.haptic('light'),
+      style:{ background:'#fff', borderRadius:14, overflow:'hidden', border:'1px solid rgba(6,24,37,.08)', boxShadow:'0 2px 14px rgba(6,24,37,.06)', display:'flex', flexDirection:'column', animation:`fadeUp .45s cubic-bezier(.16,1,.3,1) ${delay}ms both`, transition:'transform .22s cubic-bezier(.16,1,.3,1),box-shadow .22s cubic-bezier(.16,1,.3,1)' },
+      ...hoverProps,
+    },
+      // Image
+      e('div', { style:{ position:'relative', height:cardImgH, width:'100%', background: imgBg, overflow:'hidden', flexShrink:0 } },
+        e('img', {
+          src: this.img(dish.img), alt: dish.name, loading:'lazy', decoding:'async', width:320, height:320,
+          style:{ width:'100%', height:'100%', objectFit:imgFit, objectPosition:imgPos, padding:imgPad, transition:'transform .5s cubic-bezier(.16,1,.3,1)' },
+          onError: ev => { ev.currentTarget.style.display = 'none'; },
+        }),
+        // Gradient overlay on food images for readability
+        imgFit === 'cover' && e('div', { style:{ position:'absolute', bottom:0, left:0, right:0, height:60, background:'linear-gradient(to top,rgba(6,24,37,.45),transparent)', pointerEvents:'none' } }),
+        // VEG badge
+        dish.veg && e('span', { style:{ position:'absolute', top:8, left:8, background:'linear-gradient(135deg,#2d6a4f,#3d8a65)', color:'#fff', fontFamily:"'DM Sans',sans-serif", fontSize:'.5rem', fontWeight:700, letterSpacing:'.09em', padding:'.15rem .42rem', borderRadius:5, textTransform:'uppercase', boxShadow:'0 2px 6px rgba(45,106,79,.38)', zIndex:3 } }, 'VEG'),
+        // Badge
+        b && e('span', { style:{ position:'absolute', bottom:8, right:8, background: b.bg, color: b.color, fontFamily:"'DM Sans',sans-serif", fontSize:'.54rem', fontWeight:700, padding:'.2rem .52rem', borderRadius:6, display:'inline-flex', alignItems:'center', gap:'.22rem', zIndex:3, backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)', letterSpacing:'.02em' } }, b.icon, '\u00a0', b.label)
+      ),
+      // Info
+      e('div', { style:{ padding:'.9rem 1rem 1rem', flex:1, display:'flex', flexDirection:'column' } },
+        e('h3', { style:{ fontFamily:"'Playfair Display',serif", fontSize:'1.02rem', fontWeight:600, color:'#082030', marginBottom:'.2rem', lineHeight:1.3 } }, dish.name),
+        e('p', { style:{ fontSize:'.74rem', color:'#1e3d52', marginBottom:'.55rem', lineHeight:1.56, flex:1 } }, dish.desc),
+        e('div', { style:{ display:'flex', alignItems:'center', gap:'.5rem', flexWrap:'wrap' } },
+          e('span', { style:{ fontFamily:"'DM Sans',sans-serif", fontSize:'.92rem', fontWeight:700, color:'#0779a0', letterSpacing:'-.01em' } }, dish.price),
+          dish.small && e('span', { style:{ display:'flex', alignItems:'center', gap:'.22rem', fontSize:'.67rem', color:'#1a4a62' } },
+            e('span', { style:{ fontSize:'.57rem', textTransform:'uppercase', letterSpacing:'.04em', opacity:.75 } }, 'piccola'),
+            dish.small
+          )
+        ),
+        dish.allergens && dish.allergens.length > 0 && this.buildAllergens(e, dish.allergens, catId + '-' + index, openA)
+      )
+    );
+  }
+
+  /* ── Allergen tags ── */
+  buildAllergens(e, codes, baseKey, openA) {
+    return e('div', { style:{ display:'flex', flexWrap:'wrap', gap:'.25rem', marginTop:'.45rem' } },
+      codes.map(code => {
+        const key = baseKey + '-' + code;
+        const open = !!openA[key];
+        return e('button', {
+          key: code,
+          type: 'button',
+          title: AL[code],
+          'aria-label': AL[code],
+          'aria-expanded': open,
+          onClick: () => this.toggleA(key),
+          style:{ display:'inline-flex', alignItems:'center', justifyContent:'center', gap:'.25rem', minWidth:28, minHeight:28, padding: open ? '.3rem .55rem' : '.3rem .45rem', background: open ? '#0daec8' : 'rgba(6,24,37,.07)', border:'1px solid ' + (open ? '#0daec8' : 'rgba(6,24,37,.12)'), borderRadius:6, fontFamily:"'DM Sans',sans-serif", fontSize:'.62rem', fontWeight:700, color: open ? '#fff' : '#1e3d52', letterSpacing:'.02em', cursor:'pointer', transition:'all .18s ease' }
+        },
+          code,
+          open && e('span', { style:{ fontWeight:500, fontSize:'.58rem', whiteSpace:'nowrap', letterSpacing:'.01em' } }, AL[code])
+        );
+      })
+    );
+  }
+
+  /* ── Upsell ── */
+  buildUpsell(e) {
+    return e('div', {
+      key: 'upsell',
+      style:{ margin:'2rem 0 .5rem', padding:'1.8rem 1.4rem', background:'linear-gradient(160deg,#071e2e 0%,#0a2d44 62%,#092840 100%)', borderRadius:20, border:'1px solid rgba(13,174,200,.18)', position:'relative', overflow:'hidden' }
+    },
+      e('div', { style:{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 12% 88%,rgba(13,174,200,.08) 0%,transparent 52%)', pointerEvents:'none' } }),
+      e('div', { style:{ textAlign:'center', marginBottom:'1.2rem', position:'relative' } },
+        e('span', { style:{ fontSize:'1.45rem', display:'block', marginBottom:'.3rem' } }, '💡'),
+        e('h3', { style:{ fontFamily:"'Playfair Display',serif", fontSize:'1.25rem', fontWeight:600, color:'#fff' } }, 'Le nostre Combo'),
+        e('p', { style:{ fontSize:'.7rem', color:'rgba(255,255,255,.62)', marginTop:'.12rem', fontStyle:'italic' } }, 'Combinazioni pensate per te — risparmia e godi di più')
+      ),
+      e('div', { style:{ display:'flex', flexDirection:'column', gap:'.6rem', position:'relative' } },
+        UPSELL.map((u, i) => e('div', {
+          key: i,
+          style:{ display:'flex', alignItems:'center', gap:'.85rem', background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.065)', borderRadius:10, padding:'.82rem 1rem', transition:'all .22s ease', cursor:'default' },
+          onMouseEnter: ev => { ev.currentTarget.style.background='rgba(255,255,255,.085)'; ev.currentTarget.style.borderColor='rgba(13,174,200,.35)'; },
+          onMouseLeave: ev => { ev.currentTarget.style.background='rgba(255,255,255,.04)'; ev.currentTarget.style.borderColor='rgba(255,255,255,.065)'; }
+        },
+          e('span', { style:{ fontSize:'1.4rem', flexShrink:0 } }, u.emoji),
+          e('div', { style:{ display:'flex', flexDirection:'column', gap:'.1rem' } },
+            e('strong', { style:{ fontFamily:"'DM Sans',sans-serif", fontSize:'.8rem', fontWeight:600, color:'rgba(255,255,255,.9)' } }, u.title),
+            e('span', { style:{ fontSize:'.68rem', color:'rgba(255,255,255,.38)' } }, u.items),
+            e('span', { style:{ fontSize:'.72rem', fontWeight:600, color:'#45d4ea', marginTop:'.1rem' } }, u.saving)
+          )
+        ))
+      )
+    );
+  }
+
+  /* ── Allergen legend ── */
+  buildLegend(e) {
+    return e('div', { style:{ marginTop:'2rem', paddingTop:'1.5rem', borderTop:'1px solid rgba(255,255,255,.08)', textAlign:'left' } },
+      e('p', { style:{ fontFamily:"'DM Sans',sans-serif", fontSize:'.66rem', fontWeight:600, color:'rgba(255,255,255,.78)', letterSpacing:'.08em', textTransform:'uppercase', marginBottom:'.8rem', textAlign:'center' } }, 'Allergeni — Reg. UE 1169/2011'),
+      e('div', { className:'allergen-grid', style:{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:'.4rem 1rem', marginBottom:'.9rem' } },
+        Object.entries(AL).map(([code, label]) => e('span', {
+          key: code,
+          style:{ display:'flex', alignItems:'center', gap:'.4rem', fontFamily:"'DM Sans',sans-serif", fontSize:'.63rem', color:'rgba(255,255,255,.68)' }
+        },
+          e('span', { style:{ display:'inline-flex', alignItems:'center', justifyContent:'center', minWidth:20, height:16, padding:'0 .3rem', background:'rgba(255,255,255,.08)', border:'1px solid rgba(255,255,255,.12)', borderRadius:4, fontFamily:"'DM Sans',sans-serif", fontSize:'.52rem', fontWeight:700, color:'rgba(255,255,255,.92)', flexShrink:0 } }, code),
+          label
+        ))
+      ),
+      e('p', { style:{ fontSize:'.6rem', color:'rgba(255,255,255,.58)', lineHeight:1.6, textAlign:'center', fontStyle:'italic' } }, "Le informazioni sugli allergeni sono indicative. Per allergie gravi o intolleranze specifiche, si prega di informare il personale prima di ordinare. Possibile contaminazione crociata in cucina.")
+    );
+  }
+
+  /* ── Back to top ── */
+  buildBTT(e, show) {
+    return e('button', {
+      onClick: () => { this.haptic('medium'); window.scrollTo({ top:0, behavior:'smooth' }); },
+      'aria-label': 'Torna su',
+      style:{ position:'fixed', bottom:'calc(1.5rem + env(safe-area-inset-bottom))', right:'calc(1.5rem + env(safe-area-inset-right))', width:46, height:46, borderRadius:'50%', background:'#0daec8', color:'#fff', border:'none', cursor:'pointer', fontSize:'1.1rem', display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 18px rgba(13,174,200,.38)', zIndex:200, transition:'opacity .25s ease,transform .25s ease,background .2s', opacity: show ? 1 : 0, transform: show ? 'translateY(0)' : 'translateY(10px)', pointerEvents: show ? 'auto' : 'none' },
+      onMouseEnter: ev => { ev.currentTarget.style.background = '#0b9bb5'; ev.currentTarget.style.transform = 'translateY(-2px)'; },
+      onMouseLeave: ev => { ev.currentTarget.style.background = '#0daec8'; ev.currentTarget.style.transform = show ? 'translateY(0)' : 'translateY(10px)'; }
+    }, '↑');
+  }
+}
+</script>
+</body>
+</html>

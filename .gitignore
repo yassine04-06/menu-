@@ -25,3 +25,12 @@ dist-ssr
 
 # Claude Code local session data
 .claude/
+
+# Backup locali creati durante il refactor (non versionare)
+/src_backup_old_design/
+/public_backup_images/
+/public_images_precompress_backup/
+/public_logo_precompress_backup.png
+
+# Archivio zip ridondante del design (la cartella è già versionata)
+/Design migliorato richiesto.zip

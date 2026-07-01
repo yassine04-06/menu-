@@ -1,0 +1,13 @@
+{
+  "name": "Qahwat Blu Caffé",
+  "short_name": "Qahwat Blu",
+  "description": "Menu digitale — cucina marocchina autentica",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071e2e",
+  "theme_color": "#071e2e",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/logo.png", "sizes": "227x224", "type": "image/png", "purpose": "any" }
+  ]
+}
